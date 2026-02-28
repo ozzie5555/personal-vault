@@ -5,8 +5,8 @@ import { redirect } from 'next/navigation';
 import { eq, desc } from 'drizzle-orm';
 import { addPassword } from '@/actions/vault';
 import { logout } from '@/actions/auth';
-import PasswordCard from '@/components/PasswordCard';
 import { ShieldCheck, LogOut, Plus, LockKeyhole } from 'lucide-react';
+import SearchableList from '@/components/SearchableList';
 
 export default async function Dashboard() {
   const cookieStore = await cookies();
@@ -80,28 +80,9 @@ export default async function Dashboard() {
             </div>
           </div>
 
-          {/* Right Panel: Password List */}
+          {/* Right Panel: Searchable Password List */}
           <div className="lg:col-span-8">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-lg font-semibold">Stored Credentials</h2>
-              <span className="text-xs font-medium text-zinc-500 bg-zinc-900 px-3 py-1 rounded-full border border-zinc-800">
-                {userPasswords.length} items
-              </span>
-            </div>
-            
-            {userPasswords.length === 0 ? (
-              <div className="border border-dashed border-zinc-800 rounded-2xl p-12 text-center text-zinc-500 flex flex-col items-center justify-center bg-zinc-900/20">
-                <ShieldCheck className="w-12 h-12 mb-4 text-zinc-700" />
-                <p>Your vault is empty.</p>
-                <p className="text-sm mt-1">Start securing your passwords using the form on the left.</p>
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {userPasswords.map((pw) => (
-                  <PasswordCard key={pw.id} pw={pw} />
-                ))}
-              </div>
-            )}
+            <SearchableList passwords={userPasswords} />
           </div>
 
         </div>
